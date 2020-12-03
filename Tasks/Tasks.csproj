@@ -127,6 +127,7 @@
     </Compile>
     <Compile Include="AuthenticationService\CustomMemberShipProvider.cs" />
     <Compile Include="AuthenticationService\CustomMembershipUser.cs" />
+    <Compile Include="Helpers\TasksHelper.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\ViewModels\RegisterViewModel.cs" />
@@ -169,10 +170,12 @@
     <Content Include="Views\Defaults\About.cshtml" />
     <Content Include="Views\Defaults\Contact.cshtml" />
     <Content Include="Views\Defaults\Index.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout2 - Copy.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Create.cshtml" />
+    <Content Include="Views\Home\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

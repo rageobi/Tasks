@@ -6,7 +6,11 @@ namespace Tasks.Models
 {
     public class User
     {
-        public static int UserId { get; set; } = 0;
+        public static int _UserId { get; set; } = 0;
+        public int UserId
+        {
+            get; set;
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName
@@ -16,14 +20,14 @@ namespace Tasks.Models
                 return this.FirstName + ' ' + this.LastName;
             }
         }
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
         [DataType(DataType.Password)]
         public string Password { get; set; }
         public DateTime CreationDate { get; set; }
         public User()
         {
-            UserId += 1;
+            _UserId += 1;
         }
     }
 }
