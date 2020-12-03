@@ -11,26 +11,27 @@ namespace Tasks.AuthenticationService
 {
     public class AuthenticationService : IDisposable
     {
+        public static IList<User> Users = new List<User>();
         public bool UserExists(string email, string password)
         {
             //implementation here
-            return false;
+            return true;
         }
 
-        public UserModel GetUser(string username)
+        public User GetUser(string username)
         {
             //implementation here
-            return new UserModel();
+            return new User();
         }
 
-        public UserModel GetUser(long userId)
+        public User GetUser(long userId)
         {
             //implementation here
-            return new UserModel();
+            return new User();
 
         }
 
-        public bool UpdateUser(UserModel user)
+        public bool UpdateUser(User user)
         {
             //implementation here
             return true;
@@ -42,7 +43,9 @@ namespace Tasks.AuthenticationService
         }
     }
     public class CustomMemberShipProvider : MembershipProvider
-	{
+	{   
+        public static IList<User> Users = new List<User>();
+
 		public override bool ValidateUser(string username, string password)
 		{
             using (AuthenticationService service = new AuthenticationService())
@@ -78,7 +81,7 @@ namespace Tasks.AuthenticationService
 
 		public override string ApplicationName
 		{
-			get { return "MyAppMemberShip"; }
+			get { return "MyCustomMembership"; }
 			set { throw new NotImplementedException(); }
 		}
 

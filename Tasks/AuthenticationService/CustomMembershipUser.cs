@@ -9,16 +9,16 @@ namespace Tasks.AuthenticationService
 {
 	public class CustomMemberShipUser : MembershipUser
 	{
-		private readonly UserModel _userData;
+		private readonly User _userData;
 
-		public UserModel UserData
+		public User UserData
 		{
 			get { return _userData; }
 		}
-		public CustomMemberShipUser(string providername, UserModel userData) :
+		public CustomMemberShipUser(string providername, User userData) :
 		base(providername,
 			 userData.FullName,
-			 userData.UserId,
+			 User.UserId,
 			 userData.Email,
 			 string.Empty,
 			 string.Empty,
