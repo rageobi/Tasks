@@ -18,7 +18,7 @@ namespace Tasks.AuthenticationService
 		public CustomMemberShipUser(string providername, User userData) :
 		base(providername,
 			 userData.FullName,
-			 User.UserId,
+			 userData.UserId,
 			 userData.Email,
 			 string.Empty,
 			 string.Empty,

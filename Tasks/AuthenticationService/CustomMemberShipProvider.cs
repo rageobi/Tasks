@@ -5,85 +5,41 @@ using System.Web;
 using System.Web.ApplicationServices;
 using System.Web.Security;
 using Tasks;
+using Tasks.Helpers;
 using Tasks.Models;
 
 namespace Tasks.AuthenticationService
 {
-    public class AuthenticationService : IDisposable
-    {
-        public static IList<User> Users = new List<User>();
-        public bool UserExists(string email, string password)
-        {
-            //implementation here
-            return true;
-        }
-
-        public User GetUser(string username)
-        {
-            //implementation here
-            return new User();
-        }
-
-        public User GetUser(long userId)
-        {
-            //implementation here
-            return new User();
-
-        }
-
-        public bool UpdateUser(User user)
-        {
-            //implementation here
-            return true;
-        }
-
-        public void Dispose()
-        {
-            //implementation here
-        }
-    }
     public class CustomMemberShipProvider : MembershipProvider
-	{   
-        public static IList<User> Users = new List<User>();
+    {
+        private readonly TasksHelper service = new TasksHelper();
 
-		public override bool ValidateUser(string username, string password)
-		{
-            using (AuthenticationService service = new AuthenticationService())
-			{
-				return service.UserExists(username, password);
-			}
-		}
+        public override bool ValidateUser(string username, string password)
+        {
+            return service.ValidateUser(username, password);
+        }
 
-		public override MembershipUser GetUser(string username, bool userIsOnline=true)
-		{
-			using (var service = new AuthenticationService())
-			{
-				var user = service.GetUser(username);
+        public override MembershipUser GetUser(string username, bool userIsOnline = true)
+        {
+            if (service.UserExists(username))
+                return new CustomMemberShipUser(Membership.Provider.ApplicationName, service.GetUser(username));
+            return null;
+        }
 
-				if (null != user)
-					return new CustomMemberShipUser(Membership.Provider.ApplicationName, user);
+        public override void UpdateUser(MembershipUser userToUpdate)
+        {
+            var user = (CustomMemberShipUser)userToUpdate;
 
-				return null;
-			}
-		}
+            var result = service.UpdateUser(user.UserData);
+            if (!result)
+                throw new Exception("User has not been updated");
+        }
 
-		public override void UpdateUser(MembershipUser userToUpdate)
-		{
-			var user = (CustomMemberShipUser)userToUpdate;
-			using (var service = new AuthenticationService())
-			{
-				var result = service.UpdateUser(user.UserData);
-				if (!result)
-					throw new Exception("User has not been updated");
-			}
-
-		}
-
-		public override string ApplicationName
-		{
-			get { return "MyCustomMembership"; }
-			set { throw new NotImplementedException(); }
-		}
+        public override string ApplicationName
+        {
+            get { return "MyCustomMembership"; }
+            set { throw new NotImplementedException(); }
+        }
 
         public override bool EnablePasswordRetrieval => throw new NotImplementedException();
 
@@ -106,9 +62,9 @@ namespace Tasks.AuthenticationService
         public override string PasswordStrengthRegularExpression => throw new NotImplementedException();
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
-		{
-			throw new NotImplementedException();
-		}
+        {
+            throw new NotImplementedException();
+        }
 
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
@@ -169,12 +125,6 @@ namespace Tasks.AuthenticationService
         {
             throw new NotImplementedException();
         }
-
-        ///
-        /// 
-        /// all overrrided methods
-        /// 
-        /// 
 
     }
 
