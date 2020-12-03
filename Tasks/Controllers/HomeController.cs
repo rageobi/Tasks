@@ -3,28 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using Tasks.AuthenticationService;
+using Tasks.Models;
+using Tasks.Models.ViewModels;
 
 namespace Tasks.Controllers
 {
-    public class HomeController : Controller
-    {
-        public ActionResult Index()
-        {
-            return View();
-        }
+	[Authorize]
+	public class HomeController : Controller
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+	{
+		[AllowAnonymous]
+		[HttpGet]
+        public ActionResult Login() 
+		{
+			return View();
+		}
 
-            return View();
-        }
+		public ActionResult Index()
+		{
+			return View();
+		}
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+		public void SignOut()
+		{
+			
+		}
 
-            return View();
-        }
-    }
+	}
 }
