@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Tasks.AuthenticationService;
+using Tasks.Helpers;
 using Tasks.Models;
 using Tasks.Models.ViewModels;
 using Tasks.ViewModels;
@@ -13,9 +14,8 @@ namespace Tasks.Controllers
 {
     public class AccountController : Controller
     {
-        private IList<User> Users = CustomMemberShipProvider.Users;
-        public AuthenticationService.AuthenticationService authenticationService;
-
+        private static IList<User> Users = TasksHelper.Users;
+   
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel loginViewModel)
@@ -26,10 +26,11 @@ namespace Tasks.Controllers
             }
             if (new CustomMemberShipProvider().ValidateUser(loginViewModel.UserName, loginViewModel.Password))
             {
-                User MatchedUser = Users.FirstOrDefault(x => x.UserName.Equals(loginViewModel.UserName));
+                User MatchedUser = Users.FirstOrDefault(x => x.Username.Equals(loginViewModel.UserName));
                 if (MatchedUser != null)
-                {
-                    FormsAuthentication.SetAuthCookie(MatchedUser.UserName, true);
+                {   
+                    FormsAuthentication.SetAuthCookie(MatchedUser.Username, true);
+                    Session["UserId"] = new TasksHelper().GetUserID(MatchedUser.Username);
                 }
                 else
                 {
@@ -44,6 +45,16 @@ namespace Tasks.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            Users.Add(new User()
+            {
+                FirstName = "Testing",
+                LastName = "TLN",
+                Email = "a@a.com",
+                Username = "test",
+                Password = "asdfghjkl",
+                CreationDate = DateTime.Now,
+                UserId = Models.User._UserId++
+            }); 
             return View();
         }
         [AllowAnonymous]
@@ -60,8 +71,9 @@ namespace Tasks.Controllers
             {
                 return View(registerViewModel);
             }
-            else if (Users.Any(item => item.UserName == registerViewModel.UserName && item.Email == registerViewModel.Email))
+            else if (Users.Any(item => item.Username == registerViewModel.UserName))
             {
+                TempData["msg"] = "<script>alert('Already an user. Please change your username');</script>";
                 return View(registerViewModel);
             }
             Users.Add(new User()
@@ -69,7 +81,7 @@ namespace Tasks.Controllers
                 FirstName = registerViewModel.FirstName,
                 LastName = registerViewModel.LastName,
                 Email = registerViewModel.Email,
-                UserName = registerViewModel.UserName,
+                Username = registerViewModel.UserName,
                 Password = registerViewModel.Password,
                 CreationDate = registerViewModel.CreationDate
             });
