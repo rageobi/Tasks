@@ -5,7 +5,10 @@
 }
 
 <h2>Register</h2>
-@Html.Raw(TempData["msg"])
+@if (TempData["testmsg"] != null)
+{
+    @Html.Raw(TempData["msg"])
+}
 @using (Html.BeginForm(FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -61,3 +64,6 @@
         </div>
     </div>
 }
+<div>
+    @Html.ActionLink("Already an user? Click here to Login", "Login")
+</div>
