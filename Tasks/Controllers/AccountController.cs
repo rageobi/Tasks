@@ -54,7 +54,7 @@ namespace Tasks.Controllers
                 Password = "asdfghjkl",
                 CreationDate = DateTime.Now,
                 UserId = Models.User._UserId++
-            }); 
+            });
             return View();
         }
         [AllowAnonymous]
@@ -88,9 +88,11 @@ namespace Tasks.Controllers
 
             return RedirectToAction("Login", "Account");
         }
-        public void Logout()
+        [ValidateAntiForgeryToken]
+        public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
         }
     }
 }
