@@ -62,7 +62,25 @@ namespace Tasks.Controllers
 		[HttpGet]
 		public ActionResult Edit(int id)
 		{
-			return View(new TasksHelper().GetTask(id));
+			if (Session["UserId"] != null)
+            {
+				if (Tasks.FirstOrDefault(x => x.TaskId == id).UserId == (int)Session["UserId"])
+                {
+					return View(new TasksHelper().GetTask(id));
+				}
+                else
+                {
+					TempData["UnauthorizedAlertMsg"] = "<script>alert('You are unauthorized for this.');</script>";
+					return RedirectToAction("Index");
+				}
+
+			}
+            else
+            {
+				return View("Index");
+            }
+			
+			
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -81,7 +99,23 @@ namespace Tasks.Controllers
 		[HttpGet]
 		public ActionResult Delete(int id)
         {
-			return View(new TasksHelper().GetTask(id));
+			if (Session["UserId"] != null)
+			{
+				if (Tasks.FirstOrDefault(x => x.TaskId == id).UserId == (int)Session["UserId"])
+				{
+					return View(new TasksHelper().GetTask(id));
+				}
+				else
+				{
+					TempData["UnauthorizedAlertMsg"] = "<script>alert('You are unauthorized for this.');</script>";
+					return RedirectToAction("Index");
+				}
+
+			}
+			else
+			{
+				return View("Index");
+			}
         }
 		[HttpPost]
 		[ValidateAntiForgeryToken]
