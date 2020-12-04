@@ -46,7 +46,7 @@ namespace Tasks.Controllers
 			taskModel.UserId = (int)Session["UserId"];
 			taskModel.TaskId = Task._TaskId++;
 			Tasks.Add(taskModel);
-			return RedirectToAction("Index", Tasks);
+			return RedirectToAction("Index");
 		}
 		[HttpGet]
 		public ActionResult Edit(int id)

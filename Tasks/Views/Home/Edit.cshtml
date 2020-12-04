@@ -4,16 +4,12 @@
     ViewBag.Title = "View";
 }
 
-<h2>View</h2>
-<div>
-    @Model.TaskId
-</div>
+<h2>Edit the task</h2>
 @using (Html.BeginForm(FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Task</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(Model =>Model.TaskId)

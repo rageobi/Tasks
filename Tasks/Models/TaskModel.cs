@@ -12,6 +12,7 @@ namespace Tasks.Models
         [Required(ErrorMessage = "{0} is required")]
         [DisplayName("Task Description")]
         [Description("Please Enter your task description")]
+        [DataType(DataType.MultilineText)]
         public string TaskDescription { get; set; }
         [Description("Is the task complete?")]
         [DisplayName("Task Status")]

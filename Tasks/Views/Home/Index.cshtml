@@ -3,11 +3,13 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>Index</h2>
+<br/>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+        <a href="@Url.Action("Create", "Home")" class="btn btn-info">
+            Create new task
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
 </p>
 <table class="table">
     <tr>
@@ -33,7 +35,14 @@ foreach (var item in Model) {
             @Html.DisplayFor(modelItem => item.TaskDescription)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IsCompleted)
+            @if (item.IsCompleted)
+            {
+                @:Task Completed
+            }
+            else
+            {
+                @:Task Inprogress
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CreatedOn)
@@ -42,9 +51,10 @@ foreach (var item in Model) {
             @Html.DisplayFor(modelItem => item.LastUpdated)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TaskId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TaskId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TaskId })
+            <a href="@Url.Action("Edit", "Home",new { id = item.TaskId })" class="btn btn-info">
+                Edit
+                <span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </a>
         </td>
     </tr>
     }
