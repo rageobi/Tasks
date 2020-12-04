@@ -34,7 +34,7 @@ namespace Tasks.Controllers
                 }
                 else
                 {
-                    TempData["msg"] = "<script>alert('No user found please register');</script>";
+                    TempData["RegisterAlertMsg"] = "<script>alert('No user found please register');</script>";
                     return RedirectToAction("Register");
                 }
             }
@@ -73,7 +73,7 @@ namespace Tasks.Controllers
             }
             else if (Users.Any(item => item.Username == registerViewModel.UserName))
             {
-                TempData["msg"] = "<script>alert('Already an user. Please change your username');</script>";
+                TempData["RegisterAlertMsg"] = "<script>alert('Already an user. Please change your username');</script>";
                 return View(registerViewModel);
             }
             Users.Add(new User()

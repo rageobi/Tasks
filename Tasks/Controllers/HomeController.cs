@@ -56,9 +56,27 @@ namespace Tasks.Controllers
 		[HttpPost]
 		public ActionResult Edit(Task taskModel)
 		{
+			if (!ModelState.IsValid)
+			{
+				return View(taskModel);
+			}
 			Tasks.FirstOrDefault(x => x.TaskId == taskModel.TaskId).TaskDescription =taskModel.TaskDescription;
 			Tasks.FirstOrDefault(x => x.TaskId == taskModel.TaskId).LastUpdated = DateTime.Now;
 			Tasks.FirstOrDefault(x => x.TaskId == taskModel.TaskId).IsCompleted=taskModel.IsCompleted;
+			return RedirectToAction("Index");
+		}
+
+		[HttpGet]
+		public ActionResult Delete(int id)
+        {
+			return View(new TasksHelper().GetTask(id));
+        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ActionName("Delete")]
+		public ActionResult DeletePost(int id)
+		{
+			Tasks.Remove(Tasks.FirstOrDefault(x => x.TaskId == id));
 			return RedirectToAction("Index");
 		}
 	}

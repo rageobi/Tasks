@@ -7,7 +7,7 @@
 <h5>Register</h5>
 @if (TempData["testmsg"] != null)
 {
-    @Html.Raw(TempData["msg"])
+    @Html.Raw(TempData["RegisterAlertMsg"])
 }
 @using (Html.BeginForm(FormMethod.Post))
 {
