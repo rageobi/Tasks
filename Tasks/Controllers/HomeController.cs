@@ -12,13 +12,19 @@ namespace Tasks.Controllers
 {
 	[Authorize]
 	public class HomeController : Controller
-
 	{
 		public IList<Task> Tasks = TasksHelper.Tasks;
 		[HttpGet]
 		public ActionResult Index()
 		{
-			return View(new TasksHelper().GetUserTasks((int)Session["UserId"]));
+			if (Session["UserId"] != null)
+			{
+				return View(new TasksHelper().GetUserTasks((int)Session["UserId"]));
+			}
+            else
+            {
+				return RedirectToAction("Login", "Account");
+            }
 		}
 		[HttpPost]
 		public ActionResult Index(Task taskModel)
@@ -33,11 +39,16 @@ namespace Tasks.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Create(Task taskModel)
 		{
 			if (!ModelState.IsValid)
 			{
 				return View(taskModel);
+			}
+			else if(Session["UserId"] == null)
+			{
+				return RedirectToAction("Login","Account");
 			}
 			
 			taskModel.CreatedOn = DateTime.Now;
@@ -54,6 +65,7 @@ namespace Tasks.Controllers
 			return View(new TasksHelper().GetTask(id));
 		}
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Edit(Task taskModel)
 		{
 			if (!ModelState.IsValid)
